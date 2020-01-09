@@ -11,6 +11,15 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
+		"vlucas/phpdotenv": "^4.1",
+		"symfony/finder": "^5.0",
+		"symfony/filesystem": "^5.0",
+		"box/spout": "2.7.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\Libraries\\": "application/libraries"
+		}
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
