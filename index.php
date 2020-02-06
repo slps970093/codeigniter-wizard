@@ -36,6 +36,12 @@
  * @filesource
  */
 
+$vendorFilePath = 'vendor/autoload.php';
+if (file_exists($vendorFilePath)) {
+    require $vendorFilePath;
+    $dotEnv = \Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotEnv->load();
+}
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

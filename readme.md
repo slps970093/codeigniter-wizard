@@ -9,5 +9,7 @@
 ## 如何安裝
 <ol>
     <li>執行 composer install </li>
-    <li>即可開始使用</li>
+    <li>複製 .env.example 為 .env</li>
+    <li>編輯 .env 並將 SITE_URL 改成你的網站網址</li>
+    <li>完成</li>
 </ol>
