@@ -24,8 +24,8 @@ class Language extends CI_Controller
     {
         parent::__construct();
         // 讀取精靈的專案設定檔案
-        $wizardConfig = APPPATH  . 'config' . DIRECTORY_SEPARATOR . 'wizard' . DIRECTORY_SEPARATOR . 'project.json';
-        $this->projectList = json_decode(file_get_contents($wizardConfig),true);
+        $wizardConfig = APPPATH . 'config' . DIRECTORY_SEPARATOR . 'wizard' . DIRECTORY_SEPARATOR . 'project.json';
+        $this->projectList = json_decode(file_get_contents($wizardConfig), true);
     }
 
     public function index($key)
@@ -33,7 +33,7 @@ class Language extends CI_Controller
         $projectConfig = $this->projectList[$key];
         $projectLanguageList = $this->getProjectLanguageDirectoryList($projectConfig['project_path']);
         $projectLanguageFilePath = $this->getProjectLanguageFileList($projectConfig['project_path']);
-        $this->load->view('layouts/bootstrap_base',[
+        $this->load->view('layouts/bootstrap_base', [
             'projectLangList' => $projectLanguageList,
             'projectLangFilePath' => $projectLanguageFilePath,
             'projectKey' => $key
@@ -95,21 +95,21 @@ class Language extends CI_Controller
                 if (empty($row[0])) {
                     break;
                 }
-                $lang[ $row[0] ] = $row[2];
+                $lang[$row[0]] = $row[2];
                 $count++;
             }
         }
         $reader->close();
         // 產生程式碼
         $content = "<?php\n\n";
-        $content .= $this->load->view('code_gen/lang',['data' => $lang],true);
+        $content .= $this->load->view('code_gen/lang', ['data' => $lang], true);
         $projectLangRoot = $project['project_path'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR;
-        $saveFilePath = $projectLangRoot . $postData['location'] . DIRECTORY_SEPARATOR .$postData['file_name'] .'_lang.php';
+        $saveFilePath = $projectLangRoot . $postData['location'] . DIRECTORY_SEPARATOR . $postData['file_name'] . '_lang.php';
         if (file_exists($saveFilePath)) {
             unlink($saveFilePath);
         }
-        file_put_contents($saveFilePath,$content,FILE_APPEND);
-        redirect('wizard/language/'.$key . '?status=1');
+        file_put_contents($saveFilePath, $content, FILE_APPEND);
+        redirect('wizard/language/' . $key . '?status=1');
     }
 
     /**
@@ -117,7 +117,8 @@ class Language extends CI_Controller
      * @param $projectPath
      * @return array
      */
-    private function getProjectLanguageDirectoryList($projectPath) {
+    private function getProjectLanguageDirectoryList($projectPath)
+    {
         $finder = new Finder();
         // 取得資料夾清單
         $finder->directories()->in($projectPath . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'language');
@@ -133,16 +134,15 @@ class Language extends CI_Controller
      * @param $projectPath
      * @return array
      */
-    private function getProjectLanguageFileList($projectPath) {
+    private function getProjectLanguageFileList($projectPath)
+    {
         $finder = new Finder();
         // 取得資料夾清單
         $finder->files()->name('*_lang.php')->in($projectPath . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'language');
         $data = [];
         foreach ($finder as $item) {
-            $data[ $item->getRelativePathname() ] = $item->getFileInfo();
+            $data[$item->getRelativePathname()] = $item->getFileInfo();
         }
         return $data;
     }
-
-
 }

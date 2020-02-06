@@ -15,16 +15,16 @@ class Projects extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->wizardConfigFilePath = APPPATH  . 'config' . DIRECTORY_SEPARATOR . 'wizard' . DIRECTORY_SEPARATOR . 'project.json';
+        $this->wizardConfigFilePath = APPPATH . 'config' . DIRECTORY_SEPARATOR . 'wizard' . DIRECTORY_SEPARATOR . 'project.json';
     }
 
     public function index()
     {
         $data['projectList'] = [];
         if (file_exists($this->wizardConfigFilePath)) {
-            $data['projectList'] = json_decode(file_get_contents($this->wizardConfigFilePath),true);
+            $data['projectList'] = json_decode(file_get_contents($this->wizardConfigFilePath), true);
         }
-        $this->load->view('layouts/bootstrap_base',$data);
+        $this->load->view('layouts/bootstrap_base', $data);
     }
 
     public function append()
@@ -38,10 +38,10 @@ class Projects extends CI_Controller
         }
         // 讀檔
         if (is_file($this->wizardConfigFilePath)) {
-            $data = json_decode(file_get_contents($this->wizardConfigFilePath),true);
+            $data = json_decode(file_get_contents($this->wizardConfigFilePath), true);
         }
         // 新增設定檔案
-        $data[ time() ] = [
+        $data[time()] = [
             'project_name' => $postData['projectName'],
             'project_path' => $postData['projectPath']
         ];
@@ -50,7 +50,7 @@ class Projects extends CI_Controller
         if (file_exists($this->wizardConfigFilePath)) {
             unlink($this->wizardConfigFilePath);
         }
-        file_put_contents($this->wizardConfigFilePath,json_encode($data),FILE_WRITE_MODE);
+        file_put_contents($this->wizardConfigFilePath, json_encode($data), FILE_WRITE_MODE);
         // 存檔
         $this->output->set_content_type('application/json')
             ->set_status_header(200)
