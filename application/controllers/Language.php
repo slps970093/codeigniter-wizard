@@ -9,6 +9,7 @@
 
 use Symfony\Component\Finder\Finder;
 use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 
 class Language extends CI_Controller
@@ -42,9 +43,33 @@ class Language extends CI_Controller
     /**
      * 轉換成 Excel
      */
-    public function conventExcel()
+    public function conventExcel($key)
     {
-        $inputData = $this->input->get();
+        $inputData = $this->input->get('langPath');
+        $project = $this->projectList[$key];
+
+        $langFile = $project['project_path'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR .
+            'language' . DIRECTORY_SEPARATOR . $inputData;
+        if (file_exists($langFile)) {
+            include $langFile;
+        }
+        $tmpFileName = FCPATH . DIRECTORY_SEPARATOR . "export.xlsx";
+        if (file_exists($tmpFileName)) {
+            unlink($tmpFileName);
+        }
+        $writer = WriterFactory::create(Type::XLSX); // for XLSX files
+        $writer->openToBrowser($tmpFileName);
+
+        $outputData[0][0] = 'CI 識別碼';
+        $outputData[0][1] = '語系字串';
+        $idx = 1;
+        foreach ($lang as $key => $value) {
+            $outputData[$idx][0] = $key;
+            $outputData[$idx][1] = $value;
+            $idx++;
+        }
+        $writer->addRows($outputData);
+        $writer->close();
     }
 
     public function conventLangCode($key)
@@ -84,8 +109,9 @@ class Language extends CI_Controller
             unlink($saveFilePath);
         }
         file_put_contents($saveFilePath,$content,FILE_APPEND);
-        redirect('wizard/language/'.$key);
+        redirect('wizard/language/'.$key . '?status=1');
     }
+
     /**
      * 取得專案資料夾各語系路徑
      * @param $projectPath

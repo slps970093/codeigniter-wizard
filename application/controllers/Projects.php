@@ -37,7 +37,6 @@ class Projects extends CI_Controller
             throw new Exception("專案不存在");
         }
         // 讀檔
-
         if (is_file($this->wizardConfigFilePath)) {
             $data = json_decode(file_get_contents($this->wizardConfigFilePath),true);
         }

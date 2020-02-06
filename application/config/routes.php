@@ -54,4 +54,5 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['projects/append']['post'] = 'Projects/append';
 $route['wizard/language/(:any)'] = 'Language/index/$1';
+$route['wizard/language/export/(:any)'] = 'Language/conventExcel/$1';
 $route['wizard/language/create/code/(:any)'] = 'Language/conventLangCode/$1';
